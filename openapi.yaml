@@ -10,7 +10,315 @@ servers:
     description: PROD
 
 tags:
-  -  name: USERS
+  -  name: Users
      description: Содержит методы для работы с пользователями
-paths:
 
+paths:
+  /users:
+    get:
+      tags:
+        - Users
+      description: 'Возвращает список пользователей'
+      summary: 'Список пользователей'
+      operationId: 'getUsers'
+      responses:
+        '200':
+          description: 'Успешная операция'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/successModel'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/employeesList'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+
+  /users/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: 'Числовой идентификатор пользователя'
+        required: true
+        schema:
+          type: integer
+        example: 1
+
+    get:
+      tags:
+        - Users
+      description: 'Возвращает информацию о пользователе'
+      summary: 'Данные пользователя'
+      operationId: getUserById
+      responses:
+        '200':
+          description: 'Успешная операция'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/successModel'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/employee'
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+
+    post:
+      tags:
+        - Users
+      description: 'Создание пользователя'
+      summary: 'Создание пользователя'
+      operationId: 'storeUserById'
+      requestBody:
+        $ref: '#/components/requestBodies/employee'
+      responses:
+        '200':
+          description: 'Успешная операция'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/successModel'
+                  - type: object
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+
+    patch:
+      tags:
+        - Users
+      description: 'Редактирование пользователя'
+      summary: 'Редактирование пользователя'
+      operationId: 'updateUserById'
+      requestBody:
+        $ref: '#/components/requestBodies/employeeUpdate'
+      responses:
+        '200':
+          description: 'Успешная операция'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/successModel'
+                  - type: object
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+
+    delete:
+      tags:
+        - Users
+      description: 'Удаление пользователя'
+      summary: 'Удаление пользователя'
+      operationId: 'deleteUserById'
+      responses:
+        '200':
+          description: 'Успешная операция'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/successModel'
+                  - type: object
+        '400':
+          $ref: '#/components/responses/400BadRequest'
+        '500':
+          $ref: '#/components/responses/500InternalServerError'
+
+components:
+  responses:
+    400BadRequest:
+      description: 'Ошибки валидации запроса'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorModel'
+          example: { "success": false, "data": null, "errors": [ { "type": "Bad Request", "code": 400, "message": "Метод для работы с данным запросом не найден." } ] }
+    401Unauthorized:
+      description: 'Ошибки аутентификации/авторизации по токену<br>(токен не передан, неверный токен и т.п.)'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorModel'
+          examples:
+            undefinedToken:
+              value: { "success": false, "data": null, "errors": [ { "type": "Undefined Token", "code": 401, "message": "Идентификационный токен не передан." } ] }
+            invalidToken:
+              value: { "success": false, "data": null, "errors": [ { "type": "Invalid Token", "code": 401, "message": "Переданный токен не найден, содержит неверный формат или просрочен." } ] }
+    404NotFound:
+      description: 'По данному запросу ни чего не найдено.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorModel'
+          example: { "success": false, "data": null, "errors": [ { "type": "Not Found", "code": 404, "message": "Ни одного элемента, соответствующего данному запросу не найдено." } ] }
+    422UnprocessableEntity:
+      description: 'Ошибки бизнес-логики<br>(пользователь заблокирован и т.п.)'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorModel'
+          example: { "success": false, "data": null, "errors": [ { "type": "Unprocessable Entity", "code": 422, "message": "Пользователь заблокирован." } ] }
+    500InternalServerError:
+      description: 'Непредвиденные ошибки сервера'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorModel'
+          example: { "success": false, "data": null, "errors": [ { "type": "Internal Server Error", "code": 500, "message": "Ошибка базы данных." } ] }
+
+  requestBodies:
+    employee:
+      description: JSON объект, содержащий информацию о пользователе
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [name, email, password]
+            properties:
+              name:
+                type: string
+                example: 'Авдеева Эльвира Евгеньевна'
+              email:
+                type: string
+                example: 'admin@mail.ru'
+              password:
+                type: string
+                example: 'admin'
+
+    employeeUpdate:
+      description: JSON объект, содержащий информацию о сотруднике
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [name, email, password]
+            properties:
+              name:
+                type: string
+                example: 'Авдеева Эльвира Евгеньевна'
+              email:
+                type: string
+                example: 'admin@mail.ru'
+              password:
+                type: string
+                example: 'admin'
+
+  schemas:
+    successModel:
+      type: object
+      description: 'Объект корректного ответа'
+      properties:
+        success:
+          description: 'Результат выполнения запроса (true)'
+          type: boolean
+          example: true
+        data:
+          description: 'Запрашиваемые данные, при отсутствии данных выводится <b>null</b>'
+          type: object
+        errors:
+          description: 'При успешном выполнении запроса приходит пустой массив <b>[]</b>'
+          type: array
+          items:
+            type: string
+          example: [ ]
+      required:
+        - success
+        - data
+        - errors
+
+    errorModel:
+      type: object
+      description: 'Объект ответа с ошибкой'
+      properties:
+        success:
+          description: 'Результат выполнения запроса (false)'
+          type: boolean
+          example: false
+        data:
+          description: 'При ошибке приходит <b>null</b>'
+          type: object
+          example: null
+        errors:
+          description: 'Информация об ошибке'
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                description: 'Тип ошибки'
+                type: string
+              code:
+                description: 'Код ошибки'
+                type: integer
+              massage:
+                description: 'Описание ошибки'
+                type: string
+      required:
+        - success
+        - data
+        - errors
+
+    employee:
+      description: 'Данные одного пользователя'
+      required: [ id, name, email, created_at, updated_at ]
+      type: object
+      properties:
+        id:
+          description: 'Числовой идентификатор пользователя'
+          type: integer
+          example: 1
+        name:
+          description: 'ФИО пользователя'
+          type: string
+          example: 'Авдееваа Эльвира Евгеньевна'
+        email:
+          description: 'Электронная почта" пользователя'
+          type: string
+          example: 'Авдееваа Эльвира Евгеньевна'
+        created_at:
+          description: 'Дата создания пользователя'
+          type: string
+          example: 1
+        updated_at:
+          description: 'Дата редактирования пользователя'
+          type: string
+          example: 1
+
+    employeesList:
+      description: 'Список сотрудников'
+      required: [ id, name, email, created_at, updated_at ]
+      type: object
+      properties:
+        id:
+          description: 'Числовой идентификатор пользователя'
+          type: integer
+          example: 1
+        name:
+          description: 'ФИО пользователя'
+          type: string
+          example: 'Авдееваа Эльвира Евгеньевна'
+        email:
+          description: 'Электронная почта" пользователя'
+          type: string
+          example: 'Авдееваа Эльвира Евгеньевна'
+        created_at:
+          description: 'Дата создания пользователя'
+          type: string
+          example: 1
+        updated_at:
+          description: 'Дата редактирования пользователя'
+          type: string
+          example: 1
