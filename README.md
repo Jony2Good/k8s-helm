@@ -22,7 +22,10 @@
 ------------
 
 ### Результат
-
+1. Инструкция и команды установки приложения описаны в ниже в файле README.md [Файл][2]
+2. Первоначальные миграции запускаются отдельным файлом с помощью сервиса Job [Настройка приложения][1]
+3. Файл values.yaml [Файл под helm][3]
+4. Спецификация openApi
 
 ------------
 ### Инструкция по запуску приложения
@@ -106,3 +109,7 @@ minikube tunnel
 ```
 C:\Windows\System32\drivers\etc\hosts
 ```
+
+[1]: https://github.com/Jony2Good/k8s-helm/blob/main/k8s/last-stage/11-app-job.yaml "Настройка приложения"
+[2]: https://github.com/Jony2Good/k8s-helm/blob/main/README.md "Файл"
+[3]: https://github.com/Jony2Good/k8s-helm/blob/main/k8s/values.yaml "Файл под helm"

@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  version: 0.1.0
+  title: Тестовый сервис
+  description: Сервис для работы с пользователями приложения
+servers:
+  - url: 'http://arch.homework/otusapp/aemelyanenko/api/v1/'
+    description: TEST
+  - url: 'http://arch.homework/otusapp/aemelyanenko/api/v1/'
+    description: PROD
+
+tags:
+  -  name: USERS
+     description: Содержит методы для работы с пользователями
+paths:
+
