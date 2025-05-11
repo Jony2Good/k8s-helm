@@ -109,8 +109,12 @@ minikube tunnel
 ```
 C:\Windows\System32\drivers\etc\hosts
 ```
-### Далее с помощью POSTMAN делаем запросы к сервису (описание в файле openApi.yaml в корневой директории):
-- url приложения: http://arch.homework/otusapp/aemelyanenko
+### Как сделать запросы к приложению с помощью POSTMAN?
+
+  - импортируем файл openapi.yaml в POSTMAN (выбираем чек-бокс Postman collection). 
+  - название коллекции "Тестовый сервис", в которой будет директория users
+
+***Базовый url приложения:*** http://arch.homework/otusapp/aemelyanenko
 
 [1]: https://github.com/Jony2Good/k8s-helm/blob/main/k8s/last-stage/11-app-job.yaml "Настройка приложения"
 [2]: https://github.com/Jony2Good/k8s-helm/blob/main/README.md "Файл"
