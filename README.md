@@ -109,6 +109,7 @@ minikube tunnel
 ```
 C:\Windows\System32\drivers\etc\hosts
 ```
+### Далее с помощью postman делаем запросы к сервису. Описание в файле openApi.yaml в корневой директории.
 
 [1]: https://github.com/Jony2Good/k8s-helm/blob/main/k8s/last-stage/11-app-job.yaml "Настройка приложения"
 [2]: https://github.com/Jony2Good/k8s-helm/blob/main/README.md "Файл"
