@@ -57,7 +57,7 @@ kubectl apply -f k8s/first-stage/
 ```agsl
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
-helm install postgres bitnami/postgresql --namespace k8s-basics -f values.yaml
+helm install postgres bitnami/postgresql --namespace k8s-basics -f k8s/values.yaml
 ```
 
 3. Третий шаг
