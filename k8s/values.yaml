@@ -1,0 +1,17 @@
+architecture: standalone
+auth:
+  existingSecret: db-secrets
+  secretKeys:
+    adminPasswordKey: POSTGRES_PASSWORD
+    userPasswordKey: POSTGRES_PASSWORD
+  username: k8s_user
+  database: k8s_basics
+primary:
+  service:
+    nameOverride: postgres-service
+  persistence:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
